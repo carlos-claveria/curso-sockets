@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Chat</title>
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+</head>
+<body class="container">
+
+    <h1 class="mt-5">MiniChat</h1>
+    <hr>
+    <form action="" id="miFormulario">
+         
+        <div class="row">
+            <div class="col-8">
+                
+                <input type="text" 
+                       id="txtMensaje" 
+                       placeholder="Mensaje" 
+                       class="form-control">
+
+            </div>
+            <div class="col-4">
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        <div class="col">
+            <ul id="misMensajes" class="mt-2"></ul>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.5/socket.io.js" integrity="sha512-2rUSTSAeOO02jF6eBqENNqPs1EohenJ5j+1dgDPdXSLz9nOlrr8DJk4zW/lDy8rjhGCSonW3Gx812XJQIKZKJQ==" crossorigin="anonymous"></script>
+    <script>
+        const socket = io('http://localhost:8080');
+        
+        // Referencias al DOM
+        const formulario = document.querySelector('#miFormulario');
+        const mensajes   = document.querySelector('#misMensajes');
+        const txtMensaje = document.querySelector('#txtMensaje');
+
+        // Escucho el evento submit del formulario
+        formulario.addEventListener('submit', ev => {
+            // Evitar el refresco del navegador
+            ev.preventDefault();
+            
+            //Obtengo el texto
+            const nuevoMensaje = txtMensaje.value;
+
+            socket.emit('mensaje-to-server', {
+                desde : 'cliente',
+                msg : nuevoMensaje
+            });
+
+    
+            txtMensaje.value = '';
+
+
+        });
+
+        socket.on('mensaje-from-server', data => {
+            mensajes.innerHTML += `<li>${data.msg}</li>`;
+        });
+
+
+
+    
+    
+    </script>
+
+</body>
+</html>

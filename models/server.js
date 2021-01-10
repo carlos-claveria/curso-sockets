@@ -23,11 +23,8 @@ class Server {
 
         // configuración de sockets
         this.io = socketio(this.server,
-            {cors: {
-                origin: "*",
-                methods: ["GET", "POST"]
-              }
-        });
+       
+        );
 
     }
 
